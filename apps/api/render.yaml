@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: mdrop-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: ALLOWED_ORIGINS
+        sync: false
+        # Set this to your Vercel app URL after deployment, e.g.:
+        # https://mdrop.vercel.app
