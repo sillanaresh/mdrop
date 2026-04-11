@@ -26,15 +26,9 @@ app = FastAPI(
     redoc_url=None,
 )
 
-# Build CORS origin list — add your Vercel URL via ALLOWED_ORIGINS env var
-allowed_origins = ["http://localhost:3000", "http://localhost:3001"]
-extra = os.getenv("ALLOWED_ORIGINS", "")
-if extra:
-    allowed_origins.extend(o.strip() for o in extra.split(",") if o.strip())
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=allowed_origins,
+    allow_origins=["*"],
     allow_credentials=False,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["*"],
