@@ -19,7 +19,7 @@ export default function MarkdownEditor({ content }: MarkdownEditorProps) {
         scrollBeyondLastLine: false,
         fontSize: 13,
         lineHeight: 22,
-        fontFamily: "var(--font-geist-mono), 'JetBrains Mono', 'Fira Code', monospace",
+        fontFamily: "var(--font-mono)",
         wordWrap: "on",
         lineNumbers: "off",
         folding: false,

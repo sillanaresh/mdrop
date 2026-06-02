@@ -11,12 +11,24 @@ export function detectFileFormat(file: File): string | null {
 }
 
 export function detectUrlFormat(url: string): string {
-  const lower = url.toLowerCase()
-  if (lower.includes("youtube.com") || lower.includes("youtu.be")) return "youtube"
-  if (lower.includes("wikipedia.org")) return "wikipedia"
+  let parsed: URL
+  try {
+    parsed = new URL(url)
+  } catch {
+    return "url"
+  }
+
+  const host = parsed.hostname.toLowerCase()
+  if (host === "youtu.be" || host.endsWith(".youtube.com") || host === "youtube.com") return "youtube"
+  if (host === "wikipedia.org" || host.endsWith(".wikipedia.org")) return "wikipedia"
   return "url"
 }
 
 export function isValidUrl(url: string): boolean {
-  return url.startsWith("http://") || url.startsWith("https://")
+  try {
+    const parsed = new URL(url)
+    return parsed.protocol === "http:" || parsed.protocol === "https:"
+  } catch {
+    return false
+  }
 }

@@ -20,9 +20,14 @@ export interface ApiError {
 
 export class ConvertError extends Error {
   code: string
+  maxBytes?: number
+  retryAfter?: number
+
   constructor(detail: ApiError) {
     super(detail.message)
     this.code = detail.error
+    this.maxBytes = detail.max_bytes
+    this.retryAfter = detail.retry_after
   }
 }
 
@@ -39,10 +44,25 @@ export async function convertUrl(url: string): Promise<ConvertResult> {
 }
 
 async function _post(form: FormData): Promise<ConvertResult> {
-  const res = await fetch(`${API_URL}/convert`, {
-    method: "POST",
-    body: form,
-  })
+  const controller = new AbortController()
+  const timeout = window.setTimeout(() => controller.abort(), 90000)
+
+  let res: Response
+  try {
+    res = await fetch(`${API_URL}/convert`, {
+      method: "POST",
+      body: form,
+      signal: controller.signal,
+    })
+  } catch (error) {
+    const message =
+      error instanceof DOMException && error.name === "AbortError"
+        ? "Conversion timed out. Try a smaller file or a simpler URL."
+        : "Connection failed. Check your internet and try again."
+    throw new ConvertError({ error: "network_error", message })
+  } finally {
+    window.clearTimeout(timeout)
+  }
 
   if (!res.ok) {
     const body = await res.json().catch(() => ({
@@ -57,7 +77,7 @@ async function _post(form: FormData): Promise<ConvertResult> {
 
 export async function warmup(): Promise<boolean> {
   try {
-    const res = await fetch(`${API_URL}/health`, { signal: AbortSignal.timeout(5000) })
+    const res = await fetch(`${API_URL}/health`, { signal: AbortSignal.timeout(7000) })
     return res.ok
   } catch {
     return false

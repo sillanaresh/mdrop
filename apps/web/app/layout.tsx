@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "MDrop — Drop any file. Get Markdown.",
+  title: "MDrop - Convert files and URLs to Markdown",
   description:
-    "Convert PDFs, Word docs, PowerPoint slides, spreadsheets, images, and web pages to clean Markdown. Free, instant, no sign-up.",
+    "Drop PDFs, Word docs, slides, sheets, images, web pages, and YouTube links into MDrop to get clean Markdown. Free, fast, no account required.",
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

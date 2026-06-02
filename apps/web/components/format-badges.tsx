@@ -1,20 +1,22 @@
 "use client"
 
-const FORMATS = [
-  "PDF", "Word", "PowerPoint", "Excel", "CSV", "Images", "Web pages", "YouTube"
-]
+import { ALL_FORMATS, FORMAT_CONFIG } from "@/lib/format-config"
 
 export function FormatBadges() {
   return (
-    <div className="flex flex-wrap justify-center gap-1.5">
-      {FORMATS.map((f) => (
-        <span
-          key={f}
-          className="px-2.5 py-1 rounded-full text-xs font-medium bg-white border border-gray-200 text-gray-600 shadow-sm"
-        >
-          {f}
-        </span>
-      ))}
+    <div className="flex flex-wrap gap-2">
+      {ALL_FORMATS.map((format) => {
+        const config = FORMAT_CONFIG[format]
+        return (
+          <span
+            key={format}
+            className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-xs font-semibold text-[var(--color-ink-muted)] shadow-[var(--shadow-tight)]"
+            title={config.description}
+          >
+            {config.label}
+          </span>
+        )
+      })}
     </div>
   )
 }

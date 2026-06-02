@@ -1,5 +1,7 @@
 import asyncio
 import io
+import ipaddress
+import socket
 import time
 from pathlib import Path
 from urllib.parse import urlparse
@@ -91,7 +93,12 @@ async def convert_file(content: bytes, filename: str) -> ConvertResult:
 
     elapsed_ms = int((time.time() - start) * 1000)
     markdown = result.markdown or ""
-    log.info("convert_file_done", filename=filename, elapsed_ms=elapsed_ms, chars=len(markdown))
+    log.info(
+        "convert_file_done",
+        filename=filename,
+        elapsed_ms=elapsed_ms,
+        chars=len(markdown),
+    )
 
     return ConvertResult(
         markdown=markdown,
@@ -108,9 +115,67 @@ def _convert_uri_sync(url: str):
     return _md.convert_uri(url)
 
 
+def _is_private_address(hostname: str) -> bool:
+    try:
+        ip = ipaddress.ip_address(hostname)
+        return (
+            ip.is_private
+            or ip.is_loopback
+            or ip.is_link_local
+            or ip.is_multicast
+            or ip.is_reserved
+            or ip.is_unspecified
+        )
+    except ValueError:
+        pass
+
+    if hostname.lower() == "localhost":
+        return True
+
+    try:
+        addresses = socket.getaddrinfo(hostname, None)
+    except socket.gaierror:
+        return False
+
+    for address in addresses:
+        resolved = ipaddress.ip_address(address[4][0])
+        if (
+            resolved.is_private
+            or resolved.is_loopback
+            or resolved.is_link_local
+            or resolved.is_multicast
+            or resolved.is_reserved
+            or resolved.is_unspecified
+        ):
+            return True
+    return False
+
+
+def _validate_public_url(url: str) -> None:
+    parsed = urlparse(url)
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "error": "invalid_url",
+                "message": "URL must start with http:// or https:// and include a public host.",
+            },
+        )
+
+    if _is_private_address(parsed.hostname):
+        raise HTTPException(
+            status_code=422,
+            detail={
+                "error": "invalid_url",
+                "message": "Private, localhost, and internal network URLs cannot be converted.",
+            },
+        )
+
+
 async def convert_url(url: str) -> ConvertResult:
     start = time.time()
     log.info("convert_url_start", url=url)
+    _validate_public_url(url)
 
     try:
         result = await asyncio.to_thread(_convert_uri_sync, url)

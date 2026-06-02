@@ -70,7 +70,7 @@ export const FORMAT_CONFIG: Record<string, FormatConfig> = {
     description: "EXIF metadata, image info",
   },
   url: {
-    label: "Web / YouTube",
+    label: "Web pages",
     color: "text-cyan-400",
     bgColor: "bg-cyan-500/10 border-cyan-500/20",
     extensions: [],
@@ -112,5 +112,13 @@ export const ACCEPTED_FILE_TYPES = {
 export const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10 MB
 
 export const ALL_FORMATS = [
-  "pdf", "docx", "pptx", "xlsx", "csv", "image", "url",
+  "pdf",
+  "docx",
+  "pptx",
+  "xlsx",
+  "csv",
+  "image",
+  "url",
+  "youtube",
+  "wikipedia",
 ] as const
