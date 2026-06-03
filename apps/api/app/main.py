@@ -9,11 +9,25 @@ from app.routes.convert import router as convert_router
 
 log = structlog.get_logger()
 
+DEFAULT_ALLOWED_ORIGINS = (
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "https://mdrop-conv.vercel.app",
+    "https://mdrop.vercel.app",
+)
+
 
 def _allowed_origins() -> list[str]:
-    raw = os.getenv("ALLOWED_ORIGINS", "*")
+    raw = os.getenv("ALLOWED_ORIGINS", "")
+    if raw.strip() == "*":
+        return ["*"]
+
     origins = [origin.strip() for origin in raw.split(",") if origin.strip()]
-    return origins or ["*"]
+    for origin in DEFAULT_ALLOWED_ORIGINS:
+        if origin not in origins:
+            origins.append(origin)
+
+    return origins
 
 
 @asynccontextmanager

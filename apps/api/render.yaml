@@ -8,5 +8,5 @@ services:
     envVars:
       - key: ALLOWED_ORIGINS
         sync: false
-        # Set this to your Vercel app URL after deployment, e.g.:
-        # https://mdrop.vercel.app
+        # Optional comma-separated extra origins.
+        # The API already allows localhost and https://mdrop-conv.vercel.app by default.
