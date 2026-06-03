@@ -30,6 +30,10 @@ Upload file or paste URL -> Convert -> Review Markdown -> Copy or download
 | `apps/api` | FastAPI conversion service deployed separately |
 | `vercel.json` | Vercel project configuration |
 
+## Brand System
+
+MDrop uses a custom droplet-and-M mark across the product. The reusable React mark lives in `apps/web/components/brand-mark.tsx`; static favicon, Apple, manifest, and share assets live under `apps/web/app` and `apps/web/public/brand`.
+
 ## Local Development
 
 Create the backend environment:
@@ -57,6 +61,7 @@ Open <http://localhost:3000>. The default frontend API URL is `http://localhost:
 MDrop should feel like a finished conversion workspace:
 
 - The first screen should make upload and URL conversion obvious.
+- The brand mark should appear consistently in the browser tab, app metadata, header, install surfaces, and shared links.
 - File limits and supported formats should be visible before conversion.
 - Loading should explain what is happening.
 - Success should make copy, download, preview, and source review easy.

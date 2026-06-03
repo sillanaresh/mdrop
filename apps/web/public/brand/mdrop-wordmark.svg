@@ -1,0 +1,8 @@
+<svg width="512" height="192" viewBox="0 0 512 192" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="192" height="192" rx="54" fill="#245C52"/>
+  <path d="M96 34.5C72.3 58.05 52.5 83.52 52.5 111.09C52.5 138.09 71.76 160.5 96 160.5C120.24 160.5 139.5 138.09 139.5 111.09C139.5 83.52 119.7 58.05 96 34.5Z" fill="#FFFDF8"/>
+  <path d="M67.5 130.5V88.8C67.5 86.85 68.94 85.5 70.74 85.5H80.16C81.42 85.5 82.5 86.19 83.07 87.24L96 110.7L108.93 87.24C109.5 86.19 110.58 85.5 111.84 85.5H121.26C123.06 85.5 124.5 86.85 124.5 88.8V130.5H112.08V106.14L101.85 124.08H90.15L79.92 106.14V130.5H67.5Z" fill="#245C52"/>
+  <path d="M61.5 65.25H130.5" stroke="#DBECE6" stroke-width="9" stroke-linecap="round"/>
+  <text x="236" y="122" fill="#171612" font-family="Geist, Inter, ui-sans-serif, system-ui, sans-serif" font-size="76" font-weight="720" letter-spacing="0">MDrop</text>
+  <text x="238" y="152" fill="#676154" font-family="Geist, Inter, ui-sans-serif, system-ui, sans-serif" font-size="20" font-weight="520" letter-spacing="0">Markdown in one drop</text>
+</svg>
